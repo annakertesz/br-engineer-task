@@ -1,5 +1,10 @@
 package model
 
-type Limit struct {
+import "time"
 
+type Limit struct {
+	ConcurrentBuild int
+	BuildTime time.Duration
+	BuildsPerMonth int
+	TeamMembers int
 }
