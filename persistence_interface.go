@@ -4,4 +4,5 @@ import "github.com/annakertesz/br-engineer-task/model"
 
 type Persist interface {
 	Save(user *model.User)
+	GetUser(userID string) model.User
 }

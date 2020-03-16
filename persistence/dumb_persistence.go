@@ -23,3 +23,12 @@ func (p *DumbPersistence) Save(user *model.User) {
 func (p *DumbPersistence) GetUsers() []*model.User {
 	return p.users
 }
+
+func (p *DumbPersistence) GetUser(userId string) *model.User {
+	for _, user := range p.users {
+		if user.GetId() == userId {
+			return user
+		}
+	}
+	return nil
+}

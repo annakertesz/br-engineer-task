@@ -38,3 +38,7 @@ func (user *User) GetPlan() Plan {
 func (user *User) SetId(id string) {
 	user.userId = id
 }
+
+func (user *User) GetId() string {
+	return user.userId
+}
