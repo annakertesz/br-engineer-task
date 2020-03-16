@@ -5,8 +5,14 @@ import (
 	"github.com/lithammer/shortuuid"
 )
 
-type DumbPersistence struct{
+type DumbPersistence struct {
 	users []*model.User
+}
+
+func NewDumbPersistence() *DumbPersistence {
+	return &DumbPersistence{
+		users: make([]*model.User, 0),
+	}
 }
 
 func (p *DumbPersistence) Save(user *model.User) {
@@ -14,3 +20,6 @@ func (p *DumbPersistence) Save(user *model.User) {
 	p.users = append(p.users, user)
 }
 
+func (p *DumbPersistence) GetUsers() []*model.User {
+	return p.users
+}

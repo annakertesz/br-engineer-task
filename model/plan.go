@@ -34,6 +34,8 @@ func (plans *PlanType) Get(name string) Plan { //TODO: default:err
 	case ORGANIZATION:
 		return plans.Organization
 	}
+	return Plan{
+	}
 }
 
 func GetPlansFromConfig(file string) PlanType {

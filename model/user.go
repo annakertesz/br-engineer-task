@@ -15,6 +15,10 @@ func NewUser(userName string, plan Plan) User {
 	}
 }
 
+func (user *User) GetUserName() string {
+	return user.userName
+}
+
 func (user *User) AddApp(app App) {
 	user.apps = append(user.apps, app)
 }

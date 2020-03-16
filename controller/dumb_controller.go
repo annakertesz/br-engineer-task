@@ -10,6 +10,13 @@ type DumbController struct {
 	plans model.PlanType
 }
 
+func NewDumbController(db br_engineer_task.Persist, plans model.PlanType) DumbController {
+	return DumbController{
+		db:    db,
+		plans: plans,
+	}
+}
+
 func (d DumbController) CreateUser(userName string, planString string) model.User {
 	user := model.NewUser(userName, d.plans.Get(planString))
 	d.db.Save(&user)
