@@ -8,14 +8,19 @@ import (
 )
 
 type Plan struct {
-	Free Limit `json:"free"`
-	Developer Limit `json:"developer"`
-	Organization Limit `json:"organization"`
-	OpensourceDefault Limit `json:"opensource_default"`
+	Name string `json:"name"`
+	Price int `json:"price"`
+	Limits Limit `json:"limits"`
 }
 
-func GetPlansFromConfig(file string) Plan {
-	var plan Plan
+type PlanType struct {
+	Free Plan `json:"free"`
+	Developer Plan `json:"developer"`
+	Organization Plan `json:"organization"`
+}
+
+func GetPlansFromConfig(file string) PlanType {
+	var plan PlanType
 	configFile, err := os.Open(file)
 	defer configFile.Close()
 	if err != nil {
