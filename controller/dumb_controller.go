@@ -11,7 +11,9 @@ type DumbController struct {
 }
 
 func (d DumbController) CreateUser(userName string, planString string) model.User {
-	panic("implement me")
+	user := model.NewUser(userName, d.plans.Get(planString))
+	d.db.Save(&user)
+	return user
 }
 
 func (d DumbController) CreateApp(userID string, isOpenSource string) {

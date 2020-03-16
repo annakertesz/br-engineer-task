@@ -1,14 +1,15 @@
 package model
 
 type User struct{
-	userInfo string
+	userId string
+	userName string
 	plan Plan
 	apps []App
 }
 
-func NewUser(userInfo string, plan Plan) User {
+func NewUser(userName string, plan Plan) User {
 	return User{
-		userInfo: userInfo,
+		userName: userName,
 		plan:     plan,
 		apps:     nil,
 	}
