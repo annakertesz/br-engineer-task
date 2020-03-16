@@ -2,11 +2,11 @@ package model
 
 type User struct{
 	userInfo string
-	plan Limit //TODO: Plan should be plan
+	plan Plan
 	apps []App
 }
 
-func NewUser(userInfo string, plan Limit) User {
+func NewUser(userInfo string, plan Plan) User {
 	return User{
 		userInfo: userInfo,
 		plan:     plan,
@@ -22,10 +22,10 @@ func (user *User) GetApps() []App {
 	return user.apps
 }
 
-func (user *User) SetPlan(limit Limit) {
-	user.plan = limit
+func (user *User) SetPlan(plan Plan) {
+	user.plan = plan
 }
 
-func (user *User) GetPlan() Limit {
+func (user *User) GetPlan() Plan {
 	return user.plan
 }
