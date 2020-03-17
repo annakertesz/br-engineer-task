@@ -13,6 +13,7 @@ type DumbPersistence struct {
 func NewDumbPersistence() *DumbPersistence {
 	return &DumbPersistence{
 		Users: make([]*model.User, 0),
+		Apps: make([]model.App, 0),
 	}
 }
 

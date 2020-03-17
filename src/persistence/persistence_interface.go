@@ -2,7 +2,7 @@ package persistence
 
 import "github.com/annakertesz/br-engineer-task/src/model"
 
-type Persist interface {
+type Persistence interface {
 	SaveUser(user *model.User)
 	SaveApp(app model.App)
 	GetUser(userID string) *model.User

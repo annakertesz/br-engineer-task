@@ -9,12 +9,12 @@ import (
 )
 
 type DumbController struct {
-	db                persistence.Persist
+	db                persistence.Persistence
 	plans             model.PlanType
 	opensourceDefault model.Limit
 }
 
-func NewDumbController(db persistence.Persist, config config.Config) DumbController {
+func NewDumbController(db persistence.Persistence, config config.Config) DumbController {
 	return DumbController{
 		db:    db,
 		plans: config.Plans,
