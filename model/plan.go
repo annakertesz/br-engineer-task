@@ -1,12 +1,5 @@
 package model
 
-import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"os"
-)
-
 const (
 	FREE  = "free"
 	DEVELOPER = "developer"
@@ -36,16 +29,4 @@ func (plans *PlanType) Get(name string) Plan { //TODO: default:err
 	}
 	return Plan{
 	}
-}
-
-func GetPlansFromConfig(file string) PlanType {
-	var plan PlanType
-	configFile, err := os.Open(file)
-	defer configFile.Close()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	byteValue, _ := ioutil.ReadAll(configFile)
-	json.Unmarshal(byteValue, &plan)
-	return plan
 }

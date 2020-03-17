@@ -1,0 +1,40 @@
+{
+  "opensource_default": {
+    "concurrent_build": 2,
+    "builds_per_month": -1,
+    "build_time_min": 45,
+    "team_members": -1
+  },
+  "plans": {
+    "free": {
+      "name": "free",
+      "price": 0,
+      "limits": {
+        "concurrent_build": 1,
+        "builds_per_month": 1,
+        "build_time_min": 10,
+        "team_members": 2
+      }
+    },
+    "developer": {
+      "name": "developer",
+      "price": 0,
+      "limits": {
+        "concurrent_build": 2,
+        "builds_per_month": -1,
+        "build_time_min": 45,
+        "team_members": -1
+      }
+    },
+    "organization": {
+      "name": "organization",
+      "price": 0,
+      "limits": {
+        "concurrent_build": 4,
+        "builds_per_month": -1,
+        "build_time_min": 90,
+        "team_members": -1
+      }
+    }
+  }
+}
