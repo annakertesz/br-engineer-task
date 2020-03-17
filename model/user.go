@@ -4,7 +4,7 @@ type User struct{
 	userId string
 	userName string
 	plan Plan
-	apps []App
+	apps []*App
 }
 
 func NewUser(userName string, plan Plan) User {
@@ -20,10 +20,10 @@ func (user *User) GetUserName() string {
 }
 
 func (user *User) AddApp(app App) {
-	user.apps = append(user.apps, app)
+	user.apps = append(user.apps, &app)
 }
 
-func (user *User) GetApps() []App {
+func (user *User) GetApps() []*App {
 	return user.apps
 }
 

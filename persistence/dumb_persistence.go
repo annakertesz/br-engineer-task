@@ -7,6 +7,7 @@ import (
 
 type DumbPersistence struct {
 	users []*model.User
+	apps []*model.App
 }
 
 func NewDumbPersistence() *DumbPersistence {
@@ -15,9 +16,15 @@ func NewDumbPersistence() *DumbPersistence {
 	}
 }
 
-func (p *DumbPersistence) Save(user *model.User) {
+func (p *DumbPersistence) SaveUser(user *model.User) {
 	user.SetId(shortuuid.New())
 	p.users = append(p.users, user)
+}
+
+func (p *DumbPersistence) SaveApp(app model.App) {
+	app.SetId(shortuuid.New())
+	p.apps = append(p.apps, &app)
+	p.UpdateUser(*app.GetUser())
 }
 
 func (p *DumbPersistence) GetUsers() []*model.User {
@@ -31,4 +38,9 @@ func (p *DumbPersistence) GetUser(userId string) *model.User {
 		}
 	}
 	return nil
+}
+
+func (p *DumbPersistence) UpdateUser(user model.User) {  //TODO: handle if ID doesnt exists
+	persistedUser := p.GetUser(user.GetId())
+	*persistedUser = user
 }
