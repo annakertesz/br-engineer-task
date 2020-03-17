@@ -75,3 +75,26 @@ func TestDumbPersistence_UpdateUser(t *testing.T) {
 	p.UpdateUser(userA)
 	assert.Equal(t, 2, len(p.users[0].GetApps()))
 }
+
+func TestDumbPersistence_UpdateApp(t *testing.T) {
+	p := NewDumbPersistence()
+	//TODO: put into util
+	userA := model.NewUser(
+		"User One",
+		model.Plan{
+			Name:   "free",
+			Price:  0,
+			Limits: model.Limit{1, model.Duration{time.Minute}, 1, 1},
+		})
+	userA.SetId("idAusr")
+	appA := model.NewPublicApp("name", &userA)
+	userA.AddApp(appA)
+	appA.SetId("idAapp")
+	p.users = []*model.User{&userA}
+	p.apps = []model.App{appA}
+	appA.SetLimit(model.Limit{5,model.Duration{time.Hour},5,4})
+	p.UpdateUser(userA)
+	updatedApp := p.apps[0]
+	assert.Equal(t, "name", updatedApp.GetInfo())
+	assert.Equal(t, 5, updatedApp.GetLimits().ConcurrentBuild)
+}
