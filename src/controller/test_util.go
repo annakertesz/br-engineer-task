@@ -48,7 +48,7 @@ func getPersistenceWithData(config config.Config) persistence.DumbPersistence {
 			userB,
 		},
 		Apps: []model.App{
-			getExamplePrivateApp(PRIVATE_APP_ID_A, PRIVATE_APP_ID_A, userA),
+			getExamplePrivateApp(PRIVATE_APP_NAME_A, PRIVATE_APP_ID_A, userA),
 			getExamplePublicApp(PUBLIC_APP_NAME_B, PUBLIC_APP_ID_B, userA, config.OpensourceDefault),
 		},
 	}
