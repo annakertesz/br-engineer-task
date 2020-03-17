@@ -15,16 +15,20 @@ func NewPrivateApp(appName string, user *User) *PrivateApp {
 	}
 }
 
-func (p PrivateApp) SetId(id string) {
+func (p *PrivateApp) SetId(id string) {
 	p.appId = id
 }
 
-func (p PrivateApp) GetLimits() Limit {
+func (p *PrivateApp) GetId() string {
+	return p.appId
+}
+
+func (p *PrivateApp) GetLimits() Limit {
 	panic("implement me")
 }
 
-func (p PrivateApp) GetInfo() string {
-	panic("implement me")
+func (p *PrivateApp) GetInfo() string {
+	return p.appName
 }
 
 func (p PrivateApp) GetUser() *User {
