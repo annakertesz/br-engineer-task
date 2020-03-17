@@ -1,7 +1,7 @@
 package persistence
 
 import (
-	"github.com/annakertesz/br-engineer-task/model"
+	"github.com/annakertesz/br-engineer-task/src/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -67,7 +67,7 @@ func TestDumbPersistence_UpdateUser(t *testing.T) {
 			Limits: model.Limit{1, model.Duration{time.Minute}, 1, 1},
 		})
 	userA.SetId("idA")
-	userA.AddApp(model.NewPublicApp("app", &userA, model.Limit{1, model.Duration{time.Minute}, 1, 1},))  //TODO: dont need userA ref
+	userA.AddApp(model.NewPublicApp("app", &userA, model.Limit{1, model.Duration{time.Minute}, 1, 1},)) //TODO: dont need userA ref
 	p.Users = []*model.User{&userA}
 	require.Equal(t, "User One", p.Users[0].GetUserName())
 	require.Equal(t, 1, len(p.Users[0].GetApps()))
@@ -92,7 +92,7 @@ func TestDumbPersistence_UpdateApp(t *testing.T) {
 	appA.SetId("idAapp")
 	p.Users = []*model.User{&userA}
 	p.Apps = []model.App{appA}
-	appA.SetLimit(model.Limit{5,model.Duration{time.Hour},5,4})
+	appA.SetLimit(model.Limit{5, model.Duration{time.Hour},5,4})
 	p.UpdateUser(userA)
 	updatedApp := p.Apps[0]
 	assert.Equal(t, "name", updatedApp.GetInfo())

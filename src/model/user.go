@@ -1,10 +1,10 @@
 package model
 
 type User struct{
-	userId string
+	userId   string
 	userName string
-	plan Plan
-	apps []*App
+	plan     Plan
+	apps     []*App
 }
 
 func NewUser(userName string, plan Plan) User {

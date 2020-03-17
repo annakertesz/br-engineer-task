@@ -1,6 +1,6 @@
-package br_engineer_task
+package controller
 
-import "github.com/annakertesz/br-engineer-task/model"
+import "github.com/annakertesz/br-engineer-task/src/model"
 
 type Controller interface {
 	CreateUser(userName string, plan string) model.User

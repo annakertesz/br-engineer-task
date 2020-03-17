@@ -2,19 +2,19 @@ package controller
 
 import (
 	"errors"
-	br_engineer_task "github.com/annakertesz/br-engineer-task"
-	"github.com/annakertesz/br-engineer-task/config"
-	"github.com/annakertesz/br-engineer-task/model"
+	"github.com/annakertesz/br-engineer-task/src/config"
+	"github.com/annakertesz/br-engineer-task/src/model"
+	"github.com/annakertesz/br-engineer-task/src/persistence"
 	"time"
 )
 
 type DumbController struct {
-	db br_engineer_task.Persist
-	plans model.PlanType
+	db                persistence.Persist
+	plans             model.PlanType
 	opensourceDefault model.Limit
 }
 
-func NewDumbController(db br_engineer_task.Persist, config config.Config) DumbController {
+func NewDumbController(db persistence.Persist, config config.Config) DumbController {
 	return DumbController{
 		db:    db,
 		plans: config.Plans,

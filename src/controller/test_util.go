@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"github.com/annakertesz/br-engineer-task/config"
-	"github.com/annakertesz/br-engineer-task/model"
-	"github.com/annakertesz/br-engineer-task/persistence"
+	"github.com/annakertesz/br-engineer-task/src/config"
+	"github.com/annakertesz/br-engineer-task/src/model"
+	"github.com/annakertesz/br-engineer-task/src/persistence"
 	)
 
 const (

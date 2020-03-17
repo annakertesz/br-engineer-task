@@ -7,9 +7,9 @@ const (
 )
 
 type Plan struct {
-	Name string `json:"name"`
-	Price int `json:"price"`
-	Limits Limit `json:"limits"`
+	Name   string `json:"name"`
+	Price  int    `json:"price"`
+	Limits Limit  `json:"limits"`
 }
 
 type PlanType struct {

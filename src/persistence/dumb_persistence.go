@@ -1,7 +1,7 @@
 package persistence
 
 import (
-	"github.com/annakertesz/br-engineer-task/model"
+	"github.com/annakertesz/br-engineer-task/src/model"
 	"github.com/lithammer/shortuuid"
 )
 
@@ -49,7 +49,7 @@ func (p *DumbPersistence) GetUser(userId string) *model.User {
 	return nil
 }
 
-func (p *DumbPersistence) UpdateUser(user model.User) {  //TODO: handle if ID doesnt exists
+func (p *DumbPersistence) UpdateUser(user model.User) { //TODO: handle if ID doesnt exists
 	persistedUser := p.GetUser(user.GetId())
 	*persistedUser = user
 }

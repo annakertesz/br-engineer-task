@@ -1,6 +1,6 @@
-package br_engineer_task
+package persistence
 
-import "github.com/annakertesz/br-engineer-task/model"
+import "github.com/annakertesz/br-engineer-task/src/model"
 
 type Persist interface {
 	SaveUser(user *model.User)

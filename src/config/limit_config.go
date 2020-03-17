@@ -2,14 +2,14 @@ package config
 
 import (
 	"encoding/json"
-	"github.com/annakertesz/br-engineer-task/model"
+	"github.com/annakertesz/br-engineer-task/src/model"
 	"io/ioutil"
 	"os"
 )
 
 type Config struct {
-	OpensourceDefault model.Limit `json:"opensource_default"`
-	Plans model.PlanType `json:"plans"`
+	OpensourceDefault model.Limit    `json:"opensource_default"`
+	Plans             model.PlanType `json:"plans"`
 }
 
 func GetConfigFromFile(file string) (*Config, error) {

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/annakertesz/br-engineer-task/model"
+	"github.com/annakertesz/br-engineer-task/src/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
