@@ -31,6 +31,7 @@ func TestDumbController_CreateApp(t *testing.T) {
 	persistedUser := users[0]
 	require.Equal(t, 1, len(persistedUser.GetApps()))
 	newApp := *persistedUser.GetApps()[0]
+	privateAppId := newApp.GetId()
 	assert.Equal(t, newApp.GetUser(), persistedUser)
 	assert.IsType(t, &model.PrivateApp{}, newApp)
 	//create public app
@@ -40,6 +41,13 @@ func TestDumbController_CreateApp(t *testing.T) {
 	persistedUser = users[0]
 	require.Equal(t, 2, len(persistedUser.GetApps()))
 	newApp = *persistedUser.GetApps()[1]
+	publicAppId := newApp.GetId()
 	assert.Equal(t, newApp.GetUser(), persistedUser)
 	assert.IsType(t, &model.PublicApp{}, newApp)
+	//test getLimit function
+	assert.Equal(t, 2, c.GetLimit(publicAppId).ConcurrentBuild)
+	assert.Equal(t, 1, c.GetLimit(privateAppId).ConcurrentBuild)
 }
+
+
+

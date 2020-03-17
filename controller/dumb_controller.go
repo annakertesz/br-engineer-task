@@ -49,7 +49,8 @@ func (d DumbController) UsePublicLimits(appID string) {
 	panic("implement me")
 }
 
-func (d DumbController) GetLimit(appID string) {
-	panic("implement me")
+func (d DumbController) GetLimit(appID string) model.Limit {
+	app := d.db.GetApp(appID)
+	return app.GetLimits()
 }
 

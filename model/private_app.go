@@ -24,7 +24,7 @@ func (p *PrivateApp) GetId() string {
 }
 
 func (p *PrivateApp) GetLimits() Limit {
-	panic("implement me")
+	return p.user.plan.Limits
 }
 
 func (p *PrivateApp) GetInfo() string {

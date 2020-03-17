@@ -8,5 +8,5 @@ type Controller interface {
 	ChangeLimits(appID string, concBuild int, buildTime int, buildPerMonth int, teamMembers int)
 	OptOutLimits(appID string)
 	UsePublicLimits(appID string)
-	GetLimit(appID string)
+	GetLimit(appID string) model.Limit
 }

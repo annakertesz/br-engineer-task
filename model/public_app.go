@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type PublicApp struct {
 	appId   string
 	appName string
@@ -10,7 +12,12 @@ type PublicApp struct {
 func NewPublicApp(appName string, user *User) *PublicApp {
 	return &PublicApp{
 		appName: appName,
-		limits:  Limit{}, //CONFIG
+		limits:  Limit{  //TODO: from config
+			ConcurrentBuild: 2,
+			BuildTime:       Duration{time.Minute*45},
+			BuildsPerMonth:  -1,
+			TeamMembers:     -1,
+		}, //CONFIG
 		user:    user,
 	}
 }
@@ -23,7 +30,7 @@ func (p *PublicApp) GetId() string {
 }
 
 func (p *PublicApp) GetLimits() Limit {
-	panic("implement me")
+	return p.limits
 }
 
 func (p *PublicApp) GetInfo() string {
