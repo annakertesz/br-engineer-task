@@ -47,3 +47,9 @@ func (p *PublicApp) GetInfo() string {
 func (p *PublicApp) GetUser() *User {
 	return p.user
 }
+
+func (p *PublicApp) TransformToPrivate() *PrivateApp {
+	privateApp := NewPrivateApp(p.appName, p.user)
+	privateApp.appId = p.appId
+	return privateApp
+}

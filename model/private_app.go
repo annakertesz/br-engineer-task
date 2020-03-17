@@ -3,17 +3,15 @@ package model
 import "errors"
 
 type PrivateApp struct {
-	appId string
-	appName string
-	isOpenSource bool
-	user *User
+	appId        string
+	appName      string
+	user         *User
 }
 
 func NewPrivateApp(appName string, user *User) *PrivateApp {
 	return &PrivateApp{
-		appName:appName,
-		isOpenSource:false,
-		user:user,
+		appName:      appName,
+		user:         user,
 	}
 }
 
@@ -40,4 +38,3 @@ func (p *PrivateApp) GetInfo() string {
 func (p PrivateApp) GetUser() *User {
 	return p.user
 }
-

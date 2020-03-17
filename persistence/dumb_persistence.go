@@ -55,6 +55,9 @@ func (p *DumbPersistence) UpdateUser(user model.User) {  //TODO: handle if ID do
 }
 
 func (p *DumbPersistence) UpdateApp(app model.App) { //TODO: handle if ID doesnt exists
-	persistedApp := p.GetApp(app.GetId())
-	*&persistedApp = app
+	for i := range p.apps {
+		if p.apps[i].GetId() == app.GetId() {
+			p.apps[i]=app
+		}
+	}
 }

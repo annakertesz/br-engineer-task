@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	br_engineer_task "github.com/annakertesz/br-engineer-task"
 	"github.com/annakertesz/br-engineer-task/model"
 	"time"
@@ -53,12 +54,15 @@ func (d DumbController) ChangeLimits(appID string, concBuild int, buildTime time
 	return nil
 }
 
-func (d DumbController) OptOutLimits(appID string) {
-	panic("implement me")
-}
-
-func (d DumbController) UsePublicLimits(appID string) {
-	panic("implement me")
+func (d DumbController) UsePrivateLimits(appID string) error {
+	app := d.db.GetApp(appID)
+	publicApp, ok := app.(*model.PublicApp)
+	if !ok {
+		return errors.New("this is already a private application")
+	}
+	privateApp := publicApp.TransformToPrivate()
+	d.db.UpdateApp(privateApp)
+	return nil
 }
 
 func (d DumbController) GetLimit(appID string) model.Limit {

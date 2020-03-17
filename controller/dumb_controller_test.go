@@ -55,6 +55,13 @@ func TestDumbController_CreateApp(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t,1,  c.GetLimit(privateAppId).ConcurrentBuild)
 
+	//test OptOut function
+	err = c.UsePrivateLimits(publicAppId)
+	assert.NoError(t, err)
+	app := p.GetApp(publicAppId)
+	assert.IsType(t, &model.PrivateApp{}, app)
+	err = c.UsePrivateLimits(publicAppId)
+	assert.Error(t, err)
 }
 
 
