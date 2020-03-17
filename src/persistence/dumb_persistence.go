@@ -75,5 +75,5 @@ func (p *DumbPersistence) Print() {
 		fmt.Println("----------------------------")
 		fmt.Println(app.ToString())
 	}
-	fmt.Println("\n\n")
+	fmt.Print("\n\n")
 }

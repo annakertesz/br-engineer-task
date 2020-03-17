@@ -38,10 +38,10 @@ func (p *PrivateApp) GetInfo() string {
 	return p.appName
 }
 
-func (p PrivateApp) GetUser() *User {
+func (p *PrivateApp) GetUser() *User {
 	return p.user
 }
 
-func (p PrivateApp) ToString() string {
+func (p *PrivateApp) ToString() string {
 	return fmt.Sprintf("type: private\nid: %v\nname:%v\nuser:%v",p.GetId(), p.GetInfo(), p.GetUser().GetId())
 }

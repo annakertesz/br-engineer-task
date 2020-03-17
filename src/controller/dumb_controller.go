@@ -14,21 +14,21 @@ type DumbController struct {
 	opensourceDefault model.Limit
 }
 
-func NewDumbController(db persistence.Persistence, config config.Config) DumbController {
-	return DumbController{
+func NewDumbController(db persistence.Persistence, config config.Config) *DumbController {
+	return &DumbController{
 		db:    db,
 		plans: config.Plans,
 		opensourceDefault:config.OpensourceDefault,
 	}
 }
 
-func (d DumbController) CreateUser(userName string, planString string) model.User {
+func (d *DumbController) CreateUser(userName string, planString string) model.User {
 	user := model.NewUser(userName, d.plans.Get(planString))
 	d.db.SaveUser(&user)
 	return user
 }
 
-func (d DumbController) CreateApp(userID string, appName string, openSource bool) (model.App, error){
+func (d *DumbController) CreateApp(userID string, appName string, openSource bool) (model.App, error){
 	user := d.db.GetUser(userID)
 	if user == nil {
 		return nil, errors.New("Wrong userID")
@@ -45,7 +45,7 @@ func (d DumbController) CreateApp(userID string, appName string, openSource bool
 	return newApp, nil
 }
 
-func (d DumbController) ChangeLimits(appID string, concBuild int, buildTime time.Duration, buildPerMonth int, teamMembers int) error {
+func (d *DumbController) ChangeLimits(appID string, concBuild int, buildTime time.Duration, buildPerMonth int, teamMembers int) error {
 	app := d.db.GetApp(appID)
 	err := app.SetLimit(model.Limit{
 		ConcurrentBuild: concBuild,
@@ -60,7 +60,7 @@ func (d DumbController) ChangeLimits(appID string, concBuild int, buildTime time
 	return nil
 }
 
-func (d DumbController) UsePrivateLimits(appID string) error {
+func (d *DumbController) UsePrivateLimits(appID string) error {
 	app := d.db.GetApp(appID)
 	publicApp, ok := app.(*model.PublicApp)
 	if !ok {
@@ -71,7 +71,7 @@ func (d DumbController) UsePrivateLimits(appID string) error {
 	return nil
 }
 
-func (d DumbController) GetLimit(appID string) model.Limit {
+func (d *DumbController) GetLimit(appID string) model.Limit {
 	app := d.db.GetApp(appID)
 	return app.GetLimits()
 }

@@ -21,7 +21,7 @@ const (
 )
 
 
-func GetControllerWithEmptyPersistence() DumbController {
+func GetControllerWithEmptyPersistence() *DumbController {
 	p := persistence.NewDumbPersistence()
 	config, err := config.GetConfigFromFile("../config/limit_config.json") //TODO: should read config struct here
 	if err != nil {
@@ -30,7 +30,7 @@ func GetControllerWithEmptyPersistence() DumbController {
 	return NewDumbController(p, *config)
 }
 
-func GetControllerWithDataInPersistence() DumbController {
+func GetControllerWithDataInPersistence() *DumbController {
 	config, err := config.GetConfigFromFile("../config/limit_config.json") //TODO: should read config struct here
 	if err != nil {
 		panic("couldnt read config")
