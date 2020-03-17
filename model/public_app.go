@@ -1,9 +1,5 @@
 package model
 
-import (
-	"time"
-)
-
 type PublicApp struct {
 	appId   string
 	appName string
@@ -11,15 +7,10 @@ type PublicApp struct {
 	user    *User
 }
 
-func NewPublicApp(appName string, user *User) *PublicApp {
+func NewPublicApp(appName string, user *User, limit Limit) *PublicApp {
 	return &PublicApp{
 		appName: appName,
-		limits:  Limit{  //TODO: from config
-			ConcurrentBuild: 2,
-			BuildTime:       Duration{time.Minute*45},
-			BuildsPerMonth:  -1,
-			TeamMembers:     -1,
-		}, //CONFIG
+		limits:  limit,
 		user:    user,
 	}
 }

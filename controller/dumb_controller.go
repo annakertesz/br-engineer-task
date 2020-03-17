@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	br_engineer_task "github.com/annakertesz/br-engineer-task"
+	"github.com/annakertesz/br-engineer-task/config"
 	"github.com/annakertesz/br-engineer-task/model"
 	"time"
 )
@@ -10,12 +11,14 @@ import (
 type DumbController struct {
 	db br_engineer_task.Persist
 	plans model.PlanType
+	opensourceDefault model.Limit
 }
 
-func NewDumbController(db br_engineer_task.Persist, plans model.PlanType) DumbController {
+func NewDumbController(db br_engineer_task.Persist, config config.Config) DumbController {
 	return DumbController{
 		db:    db,
-		plans: plans,
+		plans: config.Plans,
+		opensourceDefault:config.OpensourceDefault,
 	}
 }
 
@@ -29,7 +32,7 @@ func (d DumbController) CreateApp(userID string, appName string, openSource bool
 	user := d.db.GetUser(userID)
 	var newApp model.App
 	if openSource {
-		newApp = model.NewPublicApp(appName, user)
+		newApp = model.NewPublicApp(appName, user, d.opensourceDefault)
 	} else {
 		newApp = model.NewPrivateApp(appName, user)
 	}

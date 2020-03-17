@@ -46,7 +46,7 @@ func TestDumbPersistence_GetApp(t *testing.T) {
 		})
 	userA.SetId("idA")
 	p.users = []*model.User{&userA}
-	appA := model.NewPublicApp("app One", &userA)
+	appA := model.NewPublicApp("app One", &userA, model.Limit{1, model.Duration{time.Minute}, 1, 1},)
 	appA.SetId("idA")
 	appB := model.NewPrivateApp("app Two", &userA)
 	appB.SetId("idB")
@@ -67,7 +67,7 @@ func TestDumbPersistence_UpdateUser(t *testing.T) {
 			Limits: model.Limit{1, model.Duration{time.Minute}, 1, 1},
 		})
 	userA.SetId("idA")
-	userA.AddApp(model.NewPublicApp("app", &userA))  //TODO: dont need userA ref
+	userA.AddApp(model.NewPublicApp("app", &userA, model.Limit{1, model.Duration{time.Minute}, 1, 1},))  //TODO: dont need userA ref
 	p.users = []*model.User{&userA}
 	require.Equal(t, "User One", p.users[0].GetUserName())
 	require.Equal(t, 1, len(p.users[0].GetApps()))
@@ -87,7 +87,7 @@ func TestDumbPersistence_UpdateApp(t *testing.T) {
 			Limits: model.Limit{1, model.Duration{time.Minute}, 1, 1},
 		})
 	userA.SetId("idAusr")
-	appA := model.NewPublicApp("name", &userA)
+	appA := model.NewPublicApp("name", &userA, model.Limit{1, model.Duration{time.Minute}, 1, 1},)
 	userA.AddApp(appA)
 	appA.SetId("idAapp")
 	p.users = []*model.User{&userA}

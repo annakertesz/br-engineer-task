@@ -1,6 +1,7 @@
 package controller
 
 import (
+	config2 "github.com/annakertesz/br-engineer-task/config"
 	"github.com/annakertesz/br-engineer-task/model"
 	"github.com/annakertesz/br-engineer-task/persistence"
 	"github.com/stretchr/testify/assert"
@@ -11,8 +12,9 @@ import (
 
 func TestDumbController_CreateUser(t *testing.T) {
 	p := persistence.NewDumbPersistence()
-	planType := model.GetPlansFromConfig("../config/config.json") //TODO: should read config struct here
-	c := NewDumbController(p, planType)
+	config, err := config2.GetConfigFromFile("../config/limit_config.json") //TODO: should read config struct here
+	require.NoError(t, err)
+	c := NewDumbController(p, *config)
 	user := c.CreateUser("UserName", "free")
 	assert.Equal(t, 1, len(p.GetUsers()))
 	assert.Equal(t, "UserName", user.GetUserName())
@@ -21,9 +23,11 @@ func TestDumbController_CreateUser(t *testing.T) {
 
 func TestDumbController_CreateApp(t *testing.T) {
 	p := persistence.NewDumbPersistence()
-	planType := model.GetPlansFromConfig("../config/config.json") //TODO: should read config struct here
-	c := NewDumbController(p, planType)
+	config, err := config2.GetConfigFromFile("../config/limit_config.json") //TODO: should read config struct here
+	require.NoError(t, err)
+	c := NewDumbController(p, *config)
 	user := c.CreateUser("UserName", "free")
+
 	//Create private app
 	c.CreateApp(user.GetId(), "App Name", false)
 	users := p.GetUsers()
@@ -34,6 +38,7 @@ func TestDumbController_CreateApp(t *testing.T) {
 	privateAppId := newPrivateApp.GetId()
 	assert.Equal(t, newPrivateApp.GetUser(), persistedUser)
 	assert.IsType(t, &model.PrivateApp{}, newPrivateApp)
+
 	//create public app
 	c.CreateApp(user.GetId(), "App Name", true)
 	users = p.GetUsers()
@@ -44,11 +49,13 @@ func TestDumbController_CreateApp(t *testing.T) {
 	publicAppId := newPublicApp.GetId()
 	assert.Equal(t, newPublicApp.GetUser(), persistedUser)
 	assert.IsType(t, &model.PublicApp{}, newPublicApp)
+
 	//test getLimit function
 	assert.Equal(t, 2, c.GetLimit(publicAppId).ConcurrentBuild)
 	assert.Equal(t, 1, c.GetLimit(privateAppId).ConcurrentBuild)
+
 	//test changeLimit function
-	err := c.ChangeLimits(publicAppId, 3, 3, 3, 3)
+	err = c.ChangeLimits(publicAppId, 3, 3, 3, 3)
 	assert.NoError(t, err)
 	assert.Equal(t,3,  c.GetLimit(publicAppId).ConcurrentBuild)
 	err = c.ChangeLimits(privateAppId, 3, 3, 3, 3)
