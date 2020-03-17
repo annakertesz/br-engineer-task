@@ -6,33 +6,33 @@ import (
 )
 
 type DumbPersistence struct {
-	users []*model.User
-	apps []model.App
+	Users []*model.User
+	Apps  []model.App
 }
 
 func NewDumbPersistence() *DumbPersistence {
 	return &DumbPersistence{
-		users: make([]*model.User, 0),
+		Users: make([]*model.User, 0),
 	}
 }
 
 func (p *DumbPersistence) SaveUser(user *model.User) {
 	user.SetId(shortuuid.New())
-	p.users = append(p.users, user)
+	p.Users = append(p.Users, user)
 }
 
 func (p *DumbPersistence) SaveApp(app model.App) {
 	app.SetId(shortuuid.New())
-	p.apps = append(p.apps, app)
+	p.Apps = append(p.Apps, app)
 	p.UpdateUser(*app.GetUser())
 }
 
 func (p *DumbPersistence) GetUsers() []*model.User {
-	return p.users
+	return p.Users
 }
 
 func (p *DumbPersistence) GetApp(appId string) model.App {
-	for _, app := range p.apps {
+	for _, app := range p.Apps {
 		if app.GetId() == appId {
 			return app
 		}
@@ -41,7 +41,7 @@ func (p *DumbPersistence) GetApp(appId string) model.App {
 }
 
 func (p *DumbPersistence) GetUser(userId string) *model.User {
-	for _, user := range p.users {
+	for _, user := range p.Users {
 		if user.GetId() == userId {
 			return user
 		}
@@ -55,9 +55,9 @@ func (p *DumbPersistence) UpdateUser(user model.User) {  //TODO: handle if ID do
 }
 
 func (p *DumbPersistence) UpdateApp(app model.App) { //TODO: handle if ID doesnt exists
-	for i := range p.apps {
-		if p.apps[i].GetId() == app.GetId() {
-			p.apps[i]=app
+	for i := range p.Apps {
+		if p.Apps[i].GetId() == app.GetId() {
+			p.Apps[i]=app
 		}
 	}
 }

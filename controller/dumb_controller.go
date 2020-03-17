@@ -28,8 +28,11 @@ func (d DumbController) CreateUser(userName string, planString string) model.Use
 	return user
 }
 
-func (d DumbController) CreateApp(userID string, appName string, openSource bool) model.App{
+func (d DumbController) CreateApp(userID string, appName string, openSource bool) (model.App, error){
 	user := d.db.GetUser(userID)
+	if user == nil {
+		return nil, errors.New("Wrong userID")
+	}
 	var newApp model.App
 	if openSource {
 		newApp = model.NewPublicApp(appName, user, d.opensourceDefault)
@@ -39,7 +42,7 @@ func (d DumbController) CreateApp(userID string, appName string, openSource bool
 	user.AddApp(newApp)
 	d.db.SaveApp(newApp)
 	d.db.UpdateUser(*user)
-	return newApp
+	return newApp, nil
 }
 
 func (d DumbController) ChangeLimits(appID string, concBuild int, buildTime time.Duration, buildPerMonth int, teamMembers int) error {

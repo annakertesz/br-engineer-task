@@ -1,73 +1,67 @@
 package controller
 
 import (
-	config2 "github.com/annakertesz/br-engineer-task/config"
 	"github.com/annakertesz/br-engineer-task/model"
-	"github.com/annakertesz/br-engineer-task/persistence"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 )
 
+const PRIVATE_APP_TO_CREATE_NAME  = "new private app"
+const PUBLIC_APP_TO_CREATE_NAME  = "new public app"
+
 func TestDumbController_CreateUser(t *testing.T) {
-	p := persistence.NewDumbPersistence()
-	config, err := config2.GetConfigFromFile("../config/limit_config.json") //TODO: should read config struct here
-	require.NoError(t, err)
-	c := NewDumbController(p, *config)
+	c := GetControllerWithEmptyPersistence()
 	user := c.CreateUser("UserName", "free")
-	assert.Equal(t, 1, len(p.GetUsers()))
+	assert.Equal(t, 1, len(c.db.GetUsers()))
 	assert.Equal(t, "UserName", user.GetUserName())
 	assert.Equal(t, time.Duration(10*time.Minute), user.GetPlan().Limits.BuildTime.Duration)
 }
 
 func TestDumbController_CreateApp(t *testing.T) {
-	p := persistence.NewDumbPersistence()
-	config, err := config2.GetConfigFromFile("../config/limit_config.json") //TODO: should read config struct here
+	c := GetControllerWithDataInPersistence()
+	_, err := c.CreateApp(USER_ID_B, PRIVATE_APP_TO_CREATE_NAME, false)
 	require.NoError(t, err)
-	c := NewDumbController(p, *config)
-	user := c.CreateUser("UserName", "free")
-
-	//Create private app
-	c.CreateApp(user.GetId(), "App Name", false)
-	users := p.GetUsers()
-	require.Equal(t, 1, len(users))
-	persistedUser := users[0]
-	require.Equal(t, 1, len(persistedUser.GetApps()))
-	newPrivateApp := *persistedUser.GetApps()[0]
-	privateAppId := newPrivateApp.GetId()
-	assert.Equal(t, newPrivateApp.GetUser(), persistedUser)
-	assert.IsType(t, &model.PrivateApp{}, newPrivateApp)
+	user := c.db.GetUser(USER_ID_B)
+	require.Equal(t, 1, len(user.GetApps()))
+	persistedApp := *user.GetApps()[0]
+	assert.Equal(t, persistedApp.GetUser(), user)
+	assert.IsType(t, &model.PrivateApp{}, persistedApp)
 
 	//create public app
-	c.CreateApp(user.GetId(), "App Name", true)
-	users = p.GetUsers()
-	require.Equal(t, 1, len(users))
-	persistedUser = users[0]
-	require.Equal(t, 2, len(persistedUser.GetApps()))
-	newPublicApp := *persistedUser.GetApps()[1]
-	publicAppId := newPublicApp.GetId()
-	assert.Equal(t, newPublicApp.GetUser(), persistedUser)
-	assert.IsType(t, &model.PublicApp{}, newPublicApp)
+	c.CreateApp(USER_ID_B, PUBLIC_APP_TO_CREATE_NAME, true)
+	user = c.db.GetUser(USER_ID_B)
+	require.Equal(t, 2, len(user.GetApps()))
+	persistedApp = *user.GetApps()[1]
+	assert.Equal(t, persistedApp.GetUser(), user)
+	assert.IsType(t, &model.PublicApp{}, persistedApp)
 
-	//test getLimit function
-	assert.Equal(t, 2, c.GetLimit(publicAppId).ConcurrentBuild)
-	assert.Equal(t, 1, c.GetLimit(privateAppId).ConcurrentBuild)
+}
+func TestDumbController_GetLimit(t *testing.T) {
+	c := GetControllerWithDataInPersistence()
+	assert.Equal(t, 2, c.GetLimit(PUBLIC_APP_ID_B).ConcurrentBuild)
+	assert.Equal(t, 1, c.GetLimit(PRIVATE_APP_ID_A).ConcurrentBuild)
 
-	//test changeLimit function
-	err = c.ChangeLimits(publicAppId, 3, 3, 3, 3)
+}
+
+func TestDumbController_ChangeLimits(t *testing.T) {
+	c := GetControllerWithDataInPersistence()
+	err := c.ChangeLimits(PUBLIC_APP_ID_B, 3, 3, 3, 3)
 	assert.NoError(t, err)
-	assert.Equal(t,3,  c.GetLimit(publicAppId).ConcurrentBuild)
-	err = c.ChangeLimits(privateAppId, 3, 3, 3, 3)
+	assert.Equal(t, 3, c.GetLimit(PUBLIC_APP_ID_B).ConcurrentBuild)
+	err = c.ChangeLimits(PRIVATE_APP_ID_A, 3, 3, 3, 3)
 	assert.Error(t, err)
-	assert.Equal(t,1,  c.GetLimit(privateAppId).ConcurrentBuild)
+	assert.Equal(t, 1, c.GetLimit(PRIVATE_APP_ID_A).ConcurrentBuild)
+}
 
-	//test OptOut function
-	err = c.UsePrivateLimits(publicAppId)
+func TestDumbController_UsePrivateLimits(t *testing.T) {
+	c := GetControllerWithDataInPersistence()
+	err := c.UsePrivateLimits(PUBLIC_APP_ID_B)
 	assert.NoError(t, err)
-	app := p.GetApp(publicAppId)
+	app := c.db.GetApp(PUBLIC_APP_ID_B)
 	assert.IsType(t, &model.PrivateApp{}, app)
-	err = c.UsePrivateLimits(publicAppId)
+	err = c.UsePrivateLimits(PUBLIC_APP_ID_B)
 	assert.Error(t, err)
 }
 
