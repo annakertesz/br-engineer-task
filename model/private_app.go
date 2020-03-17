@@ -1,5 +1,7 @@
 package model
 
+import "errors"
+
 type PrivateApp struct {
 	appId string
 	appName string
@@ -25,6 +27,10 @@ func (p *PrivateApp) GetId() string {
 
 func (p *PrivateApp) GetLimits() Limit {
 	return p.user.plan.Limits
+}
+
+func (p *PrivateApp) SetLimit(limit Limit) error {
+	return errors.New("Cant change limits of private application")
 }
 
 func (p *PrivateApp) GetInfo() string {

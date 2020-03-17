@@ -8,4 +8,5 @@ type Persist interface {
 	GetUser(userID string) *model.User
 	GetApp(appId string) model.App
 	UpdateUser(user model.User)
+	UpdateApp(app model.App)
 }

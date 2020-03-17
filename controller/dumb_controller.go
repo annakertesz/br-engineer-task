@@ -3,6 +3,7 @@ package controller
 import (
 	br_engineer_task "github.com/annakertesz/br-engineer-task"
 	"github.com/annakertesz/br-engineer-task/model"
+	"time"
 )
 
 type DumbController struct {
@@ -37,8 +38,19 @@ func (d DumbController) CreateApp(userID string, appName string, openSource bool
 	return newApp
 }
 
-func (d DumbController) ChangeLimits(appID string, concBuild int, buildTime int, buildPerMonth int, teamMembers int) {
-	panic("implement me")
+func (d DumbController) ChangeLimits(appID string, concBuild int, buildTime time.Duration, buildPerMonth int, teamMembers int) error {
+	app := d.db.GetApp(appID)
+	err := app.SetLimit(model.Limit{
+		ConcurrentBuild: concBuild,
+		BuildTime:       model.Duration{buildTime},
+		BuildsPerMonth:  buildPerMonth,
+		TeamMembers:     teamMembers,
+	})
+	if err != nil {
+		return err
+	}
+	d.db.UpdateApp(app)
+	return nil
 }
 
 func (d DumbController) OptOutLimits(appID string) {

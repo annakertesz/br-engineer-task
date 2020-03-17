@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type PublicApp struct {
 	appId   string
@@ -31,6 +33,11 @@ func (p *PublicApp) GetId() string {
 
 func (p *PublicApp) GetLimits() Limit {
 	return p.limits
+}
+
+func (p *PublicApp) SetLimit(limit Limit) error {
+	p.limits = limit
+	return nil
 }
 
 func (p *PublicApp) GetInfo() string {
