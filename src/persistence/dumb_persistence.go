@@ -1,6 +1,7 @@
 package persistence
 
 import (
+	"errors"
 	"fmt"
 	"github.com/annakertesz/br-engineer-task/src/model"
 	"github.com/lithammer/shortuuid"
@@ -18,7 +19,7 @@ func NewDumbPersistence() *DumbPersistence {
 	}
 }
 
-func (p *DumbPersistence) SaveUser(user *model.User) {
+func (p *DumbPersistence) SaveUser(user *model.User){
 	user.SetId(shortuuid.New())
 	p.Users = append(p.Users, user)
 }
@@ -51,17 +52,23 @@ func (p *DumbPersistence) GetUser(userId string) *model.User {
 	return nil
 }
 
-func (p *DumbPersistence) UpdateUser(user model.User) { //TODO: handle if ID doesnt exists
+func (p *DumbPersistence) UpdateUser(user model.User) error { //TODO: handle if ID doesnt exists
 	persistedUser := p.GetUser(user.GetId())
+	if persistedUser == nil {
+		return errors.New("Wrong userID")
+	}
 	*persistedUser = user
+	return nil
 }
 
-func (p *DumbPersistence) UpdateApp(app model.App) { //TODO: handle if ID doesnt exists
+func (p *DumbPersistence) UpdateApp(app model.App) error { //TODO: handle if ID doesnt exists
 	for i := range p.Apps {
 		if p.Apps[i].GetId() == app.GetId() {
 			p.Apps[i]=app
+			return nil
 		}
 	}
+	return errors.New("Wrong appID")
 }
 
 func (p *DumbPersistence) Print() {

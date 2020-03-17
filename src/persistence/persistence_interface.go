@@ -8,7 +8,7 @@ type Persistence interface {
 	GetUser(userID string) *model.User
 	GetUsers() []*model.User
 	GetApp(appId string) model.App
-	UpdateUser(user model.User)
-	UpdateApp(app model.App)
+	UpdateUser(user model.User) error
+	UpdateApp(app model.App) error
 	Print()
 }

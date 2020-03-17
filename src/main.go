@@ -25,7 +25,7 @@ func main() {
 
 	fmt.Println("*Create users*")
 	fmt.Println("*Create public app*")
-	userA := c.CreateUser("Myfirst User", "free")
+	userA, _ := c.CreateUser("Myfirst User", "free")
 	c.CreateUser("MySecond User", "organization")
 	appA, _ := c.CreateApp(userA.GetId(), "First Public", true)
 	db.Print()

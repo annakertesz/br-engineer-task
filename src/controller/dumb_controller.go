@@ -22,10 +22,14 @@ func NewDumbController(db persistence.Persistence, config config.Config) *DumbCo
 	}
 }
 
-func (d *DumbController) CreateUser(userName string, planString string) model.User {
-	user := model.NewUser(userName, d.plans.Get(planString))
+func (d *DumbController) CreateUser(userName string, planString string) (*model.User, error) {
+	plan, err := d.plans.Get(planString)
+	if err !=nil {
+		return nil, err
+	}
+	user := model.NewUser(userName, plan)
 	d.db.SaveUser(&user)
-	return user
+	return &user, nil
 }
 
 func (d *DumbController) CreateApp(userID string, appName string, openSource bool) (model.App, error){
@@ -41,12 +45,18 @@ func (d *DumbController) CreateApp(userID string, appName string, openSource boo
 	}
 	user.AddApp(newApp)
 	d.db.SaveApp(newApp)
-	d.db.UpdateUser(*user)
+	err := d.db.UpdateUser(*user)
+	if err != nil {
+		return nil, err
+	}
 	return newApp, nil
 }
 
 func (d *DumbController) ChangeLimits(appID string, concBuild int, buildTime time.Duration, buildPerMonth int, teamMembers int) error {
 	app := d.db.GetApp(appID)
+	if app == nil {
+		return errors.New("Wrong userID")
+	}
 	err := app.SetLimit(model.Limit{
 		ConcurrentBuild: concBuild,
 		BuildTime:       model.Duration{buildTime},
@@ -56,23 +66,35 @@ func (d *DumbController) ChangeLimits(appID string, concBuild int, buildTime tim
 	if err != nil {
 		return err
 	}
-	d.db.UpdateApp(app)
+	err = d.db.UpdateApp(app)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (d *DumbController) UsePrivateLimits(appID string) error {
 	app := d.db.GetApp(appID)
+	if app == nil {
+		return errors.New("Wrong userID")
+	}
 	publicApp, ok := app.(*model.PublicApp)
 	if !ok {
 		return errors.New("this is already a private application")
 	}
 	privateApp := publicApp.TransformToPrivate()
-	d.db.UpdateApp(privateApp)
+	err := d.db.UpdateApp(privateApp)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-func (d *DumbController) GetLimit(appID string) model.Limit {
+func (d *DumbController) GetLimit(appID string) (*model.Limit, error) {
 	app := d.db.GetApp(appID)
-	return app.GetLimits()
+	if app==nil {
+		return nil, errors.New("Wrong appID")
+	}
+	return app.GetLimits(), nil
 }
 

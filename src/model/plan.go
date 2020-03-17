@@ -1,5 +1,7 @@
 package model
 
+import "errors"
+
 const (
 	FREE  = "free"
 	DEVELOPER = "developer"
@@ -18,15 +20,15 @@ type PlanType struct {
 	Organization Plan `json:"organization"`
 }
 
-func (plans *PlanType) Get(name string) Plan { //TODO: default:err
+func (plans *PlanType) Get(name string) (Plan, error) { //TODO: default:err
 	switch name {
 	case FREE:
-		return plans.Free
+		return plans.Free, nil
 	case DEVELOPER:
-		return plans.Developer
+		return plans.Developer, nil
 	case ORGANIZATION:
-		return plans.Organization
-	}
-	return Plan{
+		return plans.Organization, nil
+	default:
+		return Plan{}, errors.New("invalid plan name")
 	}
 }

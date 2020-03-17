@@ -26,8 +26,8 @@ func (p *PrivateApp) GetId() string {
 	return p.appId
 }
 
-func (p *PrivateApp) GetLimits() Limit {
-	return p.user.plan.Limits
+func (p *PrivateApp) GetLimits() *Limit {
+	return &p.user.plan.Limits
 }
 
 func (p *PrivateApp) SetLimit(limit Limit) error {

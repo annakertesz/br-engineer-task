@@ -13,7 +13,8 @@ const PUBLIC_APP_TO_CREATE_NAME  = "new public app"
 
 func TestDumbController_CreateUser(t *testing.T) {
 	c := GetControllerWithEmptyPersistence()
-	user := c.CreateUser("UserName", "free")
+	user, err := c.CreateUser("UserName", "free")
+	require.NoError(t, err)
 	assert.Equal(t, 1, len(c.db.GetUsers()))
 	assert.Equal(t, "UserName", user.GetUserName())
 	assert.Equal(t, time.Duration(10*time.Minute), user.GetPlan().Limits.BuildTime.Duration)
@@ -40,19 +41,27 @@ func TestDumbController_CreateApp(t *testing.T) {
 }
 func TestDumbController_GetLimit(t *testing.T) {
 	c := GetControllerWithDataInPersistence()
-	assert.Equal(t, 2, c.GetLimit(PUBLIC_APP_ID_B).ConcurrentBuild)
-	assert.Equal(t, 1, c.GetLimit(PRIVATE_APP_ID_A).ConcurrentBuild)
+	limitB, err := c.GetLimit(PUBLIC_APP_ID_B)
+	require.NoError(t, err)
+	limitA, err := c.GetLimit(PRIVATE_APP_ID_A)
+	require.NoError(t, err)
+	assert.Equal(t, 2, limitB.ConcurrentBuild)
+	assert.Equal(t, 1, limitA.ConcurrentBuild)
 
 }
 
 func TestDumbController_ChangeLimits(t *testing.T) {
 	c := GetControllerWithDataInPersistence()
-	err := c.ChangeLimits(PUBLIC_APP_ID_B, 3, 3, 3, 3)
+	limitB, err := c.GetLimit(PUBLIC_APP_ID_B)
+	require.NoError(t, err)
+	limitA, err := c.GetLimit(PRIVATE_APP_ID_A)
+	require.NoError(t, err)
+	err = c.ChangeLimits(PUBLIC_APP_ID_B, 3, 3, 3, 3)
 	assert.NoError(t, err)
-	assert.Equal(t, 3, c.GetLimit(PUBLIC_APP_ID_B).ConcurrentBuild)
+	assert.Equal(t, 3, limitB.ConcurrentBuild)
 	err = c.ChangeLimits(PRIVATE_APP_ID_A, 3, 3, 3, 3)
 	assert.Error(t, err)
-	assert.Equal(t, 1, c.GetLimit(PRIVATE_APP_ID_A).ConcurrentBuild)
+	assert.Equal(t, 1, limitA.ConcurrentBuild)
 }
 
 func TestDumbController_UsePrivateLimits(t *testing.T) {

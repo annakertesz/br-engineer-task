@@ -24,8 +24,8 @@ func (p *PublicApp) GetId() string {
 	return p.appId
 }
 
-func (p *PublicApp) GetLimits() Limit {
-	return p.limits
+func (p *PublicApp) GetLimits() *Limit {
+	return &p.limits
 }
 
 func (p *PublicApp) SetLimit(limit Limit) error {

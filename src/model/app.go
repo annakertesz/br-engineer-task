@@ -2,7 +2,7 @@ package model
 
 
 type App interface {
-	GetLimits() Limit
+	GetLimits() *Limit
 	SetLimit(limit Limit) error
 	GetInfo() string
 	SetId(id string)

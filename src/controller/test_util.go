@@ -4,7 +4,7 @@ import (
 	"github.com/annakertesz/br-engineer-task/src/config"
 	"github.com/annakertesz/br-engineer-task/src/model"
 	"github.com/annakertesz/br-engineer-task/src/persistence"
-	)
+)
 
 const (
 	USER_NAME_A="usernameA"
@@ -40,8 +40,16 @@ func GetControllerWithDataInPersistence() *DumbController {
 }
 
 func getPersistenceWithData(config config.Config) persistence.DumbPersistence {
-	userA := getExampleUser(USER_NAME_A, USER_ID_A, config.Plans.Get(USER_PLAN_A))
-	userB := getExampleUser(USER_NAME_B, USER_ID_B, config.Plans.Get(USER_PLAN_B))
+	planA, err := config.Plans.Get(USER_PLAN_A)
+	if err!=nil{
+		panic("bad plan name")
+	}
+	planB, err := config.Plans.Get(USER_PLAN_B)
+	if err!=nil{
+		panic("bad plan name")
+	}
+	userA := getExampleUser(USER_NAME_A, USER_ID_A, planA)
+	userB := getExampleUser(USER_NAME_B, USER_ID_B, planB)
 	p := persistence.DumbPersistence{
 		Users: []*model.User{
 			userA,
