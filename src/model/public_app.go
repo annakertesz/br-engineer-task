@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type PublicApp struct {
 	appId   string
 	appName string
@@ -43,4 +45,8 @@ func (p *PublicApp) TransformToPrivate() *PrivateApp {
 	privateApp := NewPrivateApp(p.appName, p.user)
 	privateApp.appId = p.appId
 	return privateApp
+}
+
+func (p *PublicApp) ToString() string {
+	return fmt.Sprintf("type: public\nid: %v\nname:%v\nuser: %v\nlimit: %v",p.GetId(), p.GetInfo(), p.GetUser().GetId(), p.limits)
 }

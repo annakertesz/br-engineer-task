@@ -10,4 +10,5 @@ type Persistence interface {
 	GetApp(appId string) model.App
 	UpdateUser(user model.User)
 	UpdateApp(app model.App)
+	Print()
 }

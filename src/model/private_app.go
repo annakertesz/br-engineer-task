@@ -1,6 +1,9 @@
 package model
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type PrivateApp struct {
 	appId        string
@@ -37,4 +40,8 @@ func (p *PrivateApp) GetInfo() string {
 
 func (p PrivateApp) GetUser() *User {
 	return p.user
+}
+
+func (p PrivateApp) ToString() string {
+	return fmt.Sprintf("type: private\nid: %v\nname:%v\nuser:%v",p.GetId(), p.GetInfo(), p.GetUser().GetId())
 }

@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type User struct{
 	userId   string
 	userName string
@@ -41,4 +43,13 @@ func (user *User) SetId(id string) {
 
 func (user *User) GetId() string {
 	return user.userId
+}
+
+func (user *User) ToString() string {
+	str :=fmt.Sprintf("id: %v\nname: %v\nplan: %v\napps:", user.GetId(), user.GetUserName(), user.GetPlan().Name)
+	for _, app:= range user.GetApps() {
+		a := *app
+		str = str + fmt.Sprintf("   %v", a.GetId())
+	}
+	return str
 }

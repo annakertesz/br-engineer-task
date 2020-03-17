@@ -8,4 +8,5 @@ type App interface {
 	SetId(id string)
 	GetId() string
 	GetUser() *User
+	ToString() string
 }

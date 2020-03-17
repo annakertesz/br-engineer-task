@@ -1,6 +1,7 @@
 package persistence
 
 import (
+	"fmt"
 	"github.com/annakertesz/br-engineer-task/src/model"
 	"github.com/lithammer/shortuuid"
 )
@@ -61,4 +62,18 @@ func (p *DumbPersistence) UpdateApp(app model.App) { //TODO: handle if ID doesnt
 			p.Apps[i]=app
 		}
 	}
+}
+
+func (p *DumbPersistence) Print() {
+	fmt.Println("\nUsers:")
+	for _, user := range p.Users {
+		fmt.Println("----------------------------")
+		fmt.Println(user.ToString())
+	}
+	fmt.Println("\nApplications:")
+	for _, app := range p.Apps {
+		fmt.Println("----------------------------")
+		fmt.Println(app.ToString())
+	}
+	fmt.Println("\n\n")
 }
